@@ -26,11 +26,13 @@ namespace DiscretModeling
             foreach (var b in bits)
             {
                 text += (b + "\t");
-                if (i > 40)
+                if (i >= 600)
                 {
                     text += "\r\n";
+                    i = 0;
                 }
                 i++;
+                Console.WriteLine(i+"\n");
             }
             File.WriteAllText("ColorMap.txt", text);
             Console.WriteLine("Data saved");
@@ -63,7 +65,7 @@ namespace DiscretModeling
         static void Main(string[] args)
         {
             var bits = getBitArray("Mapa_MD_no_terrain_low_res_Gray.txt");
-            var res = Brithening(bits, -1000);
+            var res = Brithening(bits, 10);
             saveToTxtFile(res);
         }
     }
