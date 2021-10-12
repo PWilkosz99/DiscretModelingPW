@@ -22,7 +22,7 @@ namespace DiscretModeling
         static void saveToTxtFile(int[] bits)
         {
             string text = "";
-            int i = 0;
+            int i = 1;
             foreach (var b in bits)
             {
                 text += (b + "\t");
@@ -38,9 +38,9 @@ namespace DiscretModeling
             Console.WriteLine("Data saved");
         }
 
-        static int[] Brithening(int[] bits, int b)
+        static int[] Brightening(int[] bits, int b)
         {
-            int i = 0, iline = 0;
+            int i = 0;
             int maxval = 255;
             foreach (int bt in bits)
             {
@@ -65,7 +65,7 @@ namespace DiscretModeling
         static void Main(string[] args)
         {
             var bits = getBitArray("Mapa_MD_no_terrain_low_res_Gray.txt");
-            var res = Brithening(bits, 10);
+            var res = Brightening(bits, -100);
             saveToTxtFile(res);
         }
     }
