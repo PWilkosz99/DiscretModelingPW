@@ -48,9 +48,9 @@ public class Main {
         for (int i = 0; i < 330; i++) {
             for (int j = 0; j < 600; j++) {
                 if (bits[i][j] >= val) {
-                    bits[i][j] = 1;
-                } else {
                     bits[i][j] = 0;
+                } else {
+                    bits[i][j] = 255;
                 }
             }
         }
@@ -104,6 +104,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         var a = getBitArray();
         //a = Brightening(a, 10);
+        a = Binarization(a, 200);
         System.out.println(Arrays.deepToString(a));
         //makeHistogram(a);
         //saveToTxtFile(a);
