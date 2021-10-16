@@ -48,9 +48,9 @@ public class Main {
         for (int i = 0; i < 330; i++) {
             for (int j = 0; j < 600; j++) {
                 if (bits[i][j] >= val) {
-                    bits[i][j] = 0;
-                } else {
                     bits[i][j] = 255;
+                } else {
+                    bits[i][j] = 0;
                 }
             }
         }
@@ -93,7 +93,6 @@ public class Main {
 
                 g.setColor(new Color(bits[dx][dy], bits[dx][dy], bits[dx][dy]));
                 g.fillRect(dx, dy, 1, 1);
-
             }
         }
         ImageIO.write(paintImg, "png", new File("output.bmp"));
@@ -103,8 +102,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         var a = getBitArray();
-        //a = Brightening(a, 10);
-        a = Binarization(a, 200);
+        a = Binarization(a, 220);
         System.out.println(Arrays.deepToString(a));
         //makeHistogram(a);
         //saveToTxtFile(a);
