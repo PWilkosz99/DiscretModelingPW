@@ -36,11 +36,7 @@ public class Main {
                 var a = bits[i][j] + b;
                 if (a < 0) {
                     bits[i][j] = 0;
-                } else if (a > maxvalue) {
-                    bits[i][j] = maxvalue;
-                } else {
-                    bits[i][j] = a;
-                }
+                } else bits[i][j] = Math.min(a, maxvalue);
             }
         }
         return bits;
@@ -67,13 +63,11 @@ public class Main {
             }
         }
 
-        int maxi = -1;
         int maxval = -1;
 
         for (int i = 0; i < 255; i++) {
             if (values[i] > maxval) {
                 maxval = values[i];
-                maxi = i;
             }
         }
 
@@ -132,7 +126,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         var a = getBitArray();
-        //a = Binarization(a, 220);
+        a = Binarization(a, 220);
         System.out.println(Arrays.deepToString(a));
         makeHistogram(a);
         //saveToTxtFile(a);
