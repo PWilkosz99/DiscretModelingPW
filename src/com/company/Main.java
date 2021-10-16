@@ -7,6 +7,8 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static java.lang.Math.ceil;
+
 public class Main {
 
     public static int[][] getBitArray() throws FileNotFoundException {
@@ -57,7 +59,7 @@ public class Main {
         return bits;
     }
 
-    static void makeHistogram(int[][] bits) {
+    static void makeHistogram(int[][] bits) throws IOException {
         int[] values = new int[256];
         for (int i = 0; i < 330; i++) {
             for (int j = 0; j < 600; j++) {
@@ -65,9 +67,37 @@ public class Main {
             }
         }
 
+        int maxi = -1;
+        int maxval = -1;
+
         for (int i = 0; i < 255; i++) {
-            System.out.println(values[i]);
+            if (values[i] > maxval) {
+                maxval = values[i];
+                maxi = i;
+            }
         }
+
+        double[] perc= new double[256];
+
+        for (int i = 0; i < 256; i++) {
+            perc[i]=(1.0*values[i]/maxval)*100;
+            System.out.println(perc[i]);
+        }
+
+        BufferedImage paintImg = new BufferedImage(256, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = paintImg.createGraphics();
+
+        for (int dx = 0; dx < 256; dx++) {
+            int black = (int) ceil(perc[dx]);
+            for (int dy = 0; dy < black; dy++) {
+
+                g.setColor(new Color(1, 1, 1));
+                g.fillRect(dx, dy, 1, 1);
+            }
+        }
+        ImageIO.write(paintImg, "png", new File("histogram.bmp"));
+        g.dispose();
+
     }
 
     static void saveToTxtFile(int[][] bits) {
@@ -102,9 +132,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         var a = getBitArray();
-        a = Binarization(a, 220);
+        //a = Binarization(a, 220);
         System.out.println(Arrays.deepToString(a));
-        //makeHistogram(a);
+        makeHistogram(a);
         //saveToTxtFile(a);
         saveToBmp(a);
     }
