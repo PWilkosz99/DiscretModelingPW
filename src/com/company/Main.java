@@ -164,11 +164,52 @@ public class Main {
         return res;
     }
 
+    static int normalizeRGB(int val){
+        if(val>0 && val<256){
+            return val;
+        }else if(val<0){
+            return 0;
+        }else{
+            return 255;
+        }
+    }
+
+    static int[][] highPassFilter(int[][] bits) {
+
+        int weightsum;
+        int weights[][] = {{-1, -1, -1}, {-1, 9, -1}, {-1, -1, -1}};
+
+        int[][] res = new int[330][600];
+        int sum = 0;
+
+
+        for (int dy = 0; dy < 600; dy++) {
+            for (int dx = 0; dx < 330; dx++) {
+                sum = 0;
+                weightsum = 0;
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        if (checkBound(dy + i, dx + j)) {
+                            sum += bits[dy + i][dx + j] * weights[i + 1][j + 1];
+                            weightsum += weights[i + 1][j + 1];
+                        }
+                    }
+                }
+                if (weightsum != 0) {
+                    res[dx][dy] = normalizeRGB(sum / weightsum);
+                } else {
+                    res[dx][dy] = normalizeRGB(sum);
+                }
+            }
+        }
+        return res;
+    }
+
 
     public static void main(String[] args) throws IOException {
         var a = getBitArray();
         //a = Binarization(a, 200);
-        a = lowPassFilter(a);
+        a = highPassFilter(a);
         //System.out.println(Arrays.deepToString(a));
         //makeHistogram(a);
         //saveToTxtFile(a);
