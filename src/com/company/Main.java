@@ -125,7 +125,7 @@ public class Main {
     }
 
     static boolean checkBound(int x, int y) {
-        if (x < 0 || x > 329 || y < 0 || y > 599) {
+        if (x < 0 || x > 300 || y < 0 || y > 600) {
             return false;
         } else {
             return true;
