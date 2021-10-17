@@ -71,10 +71,10 @@ public class Main {
             }
         }
 
-        double[] perc= new double[256];
+        double[] perc = new double[256];
 
         for (int i = 0; i < 256; i++) {
-            perc[i]=(1.0*values[i]/maxval)*100;
+            perc[i] = (1.0 * values[i] / maxval) * 100;
             System.out.println(perc[i]);
         }
 
@@ -124,11 +124,53 @@ public class Main {
 
     }
 
+    static boolean checkBound(int x, int y) {
+        if (x < 0 || x > 329 || y < 0 || y > 599) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    static int[][] lowPassFilter(int[][] bits) {
+
+        int weightsum;
+        int weights[][] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
+
+        int[][] res = new int[330][600];
+        int sum = 0;
+
+
+        for (int dy = 0; dy < 600; dy++) {
+            for (int dx = 0; dx < 330; dx++) {
+                sum = 0;
+                weightsum = 0;
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        if (checkBound(dy + i, dx + j)) {
+                            sum += bits[dy + i][dx + j];
+                            weightsum += weights[i + 1][j + 1];
+                        }
+                    }
+                }
+                if (weightsum != 0) {
+                    res[dx][dy] = sum / weightsum;
+                } else {
+                    res[dx][dy] = sum;
+                }
+            }
+        }
+        return res;
+    }
+
+
     public static void main(String[] args) throws IOException {
         var a = getBitArray();
-        a = Binarization(a, 220);
-        System.out.println(Arrays.deepToString(a));
-        makeHistogram(a);
+        //a = Binarization(a, 200);
+        a = lowPassFilter(a);
+        //System.out.println(Arrays.deepToString(a));
+        //makeHistogram(a);
         //saveToTxtFile(a);
         saveToBmp(a);
     }
