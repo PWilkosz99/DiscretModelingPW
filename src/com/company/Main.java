@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import static java.lang.Math.ceil;
@@ -24,7 +23,6 @@ public class Main {
                 }
             }
         }
-        System.out.println(Arrays.deepToString(bitArray));
         return bitArray;
     }
 
@@ -53,6 +51,47 @@ public class Main {
             }
         }
         return bits;
+    }
+
+    static boolean checkBoundsDil(int[][] bits, int x, int y, boolean isEr){
+        if(x<0||y<0||x>=330||y>=600){
+            return false;
+        }else{
+            boolean res = bits[x][y] < 200;
+            if(isEr){
+                return !res;
+            }else{
+                return res;
+            }
+        }
+    }
+
+    static int[][] Dilatation(int[][] bits) {
+        int[][] res = new int[330][600];
+        for (int i = 0; i < 330; i++) {
+            for (int j = 0; j < 600; j++) {
+                if (checkBoundsDil(bits, i - 1, j - 1, false)) {
+                    res[i][j] = 0;
+                } else if (checkBoundsDil(bits, i, j - 1, false)) {
+                    res[i][j] = 0;
+                } else if (checkBoundsDil(bits, i + 1, j - 1, false)) {
+                    res[i][j] = 0;
+                } else if (checkBoundsDil(bits, i - 1, j, false)) {
+                    res[i][j] = 0;
+                } else if (checkBoundsDil(bits, i + 1, j, false)) {
+                    res[i][j] = 0;
+                } else if (checkBoundsDil(bits, i - 1, j + 1, false)) {
+                    res[i][j] = 0;
+                } else if (checkBoundsDil(bits, i, j + 1, false)) {
+                    res[i][j] = 0;
+                } else if (checkBoundsDil(bits, i + 1, j + 1, false)) {
+                    res[i][j] = 0;
+                }else{
+                    res[i][j] = 255;
+                }
+            }
+        }
+        return res;
     }
 
     static void makeHistogram(int[][] bits) throws IOException {
@@ -112,9 +151,9 @@ public class Main {
         BufferedImage paintImg = new BufferedImage(600, 330, BufferedImage.TYPE_INT_ARGB);
         Graphics g = paintImg.createGraphics();
 
-        for (int dy = 0; dy < 600; dy++) {
-            for (int dx = 0; dx < 330; dx++) {
 
+        for (int dx = 0; dx < 330; dx++) {
+            for (int dy = 0; dy < 600; dy++) {
                 g.setColor(new Color(bits[dx][dy], bits[dx][dy], bits[dx][dy]));
                 g.fillRect(dx, dy, 1, 1);
             }
@@ -125,19 +164,15 @@ public class Main {
     }
 
     static boolean checkBound(int x, int y) {
-        if (x < 0 || x > 300 || y < 0 || y > 600) {
-            return false;
-        } else {
-            return true;
-        }
+        return x >= 0 && x <= 300 && y >= 0 && y <= 600;
     }
 
-    static int normalizeRGB(int val){
-        if(val>0 && val<256){
+    static int normalizeRGB(int val) {
+        if (val > 0 && val < 256) {
             return val;
-        }else if(val<0){
+        } else if (val < 0) {
             return 0;
-        }else{
+        } else {
             return 255;
         }
     }
@@ -167,9 +202,8 @@ public class Main {
         int[][] res = new int[330][600];
         int sum = 0;
 
-
-        for (int dy = 0; dy < 600; dy++) {
-            for (int dx = 0; dx < 330; dx++) {
+        for (int dx = 0; dx < 330; dx++) {
+            for (int dy = 0; dy < 600; dy++) {
                 sum = 0;
                 weightSum = 0;
                 for (int i = -1; i <= 1; i++) {
@@ -193,10 +227,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         var a = getBitArray();
-        //a = Binarization(a, 200);
-        //a = gaussianFilter(a);
+        a = Binarization(a, 200);
+        a = Dilatation(a);
         //a = highPassFilter(a);
-        a = lowPassFilter(a);
+        //a = lowPassFilter(a);
         //System.out.println(Arrays.deepToString(a));
         //makeHistogram(a);
         //saveToTxtFile(a);
