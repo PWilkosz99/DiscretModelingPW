@@ -27,20 +27,25 @@ public class CA {
         return rule[upperValue] == '1';
     }
 
-    public static void CA(int[][] Table, int ruleNumber) {
+    public static int[][] CA(int[][] Table, int ruleNumber) {
         int height, width;
-        height = 10;
-        width = 5; //to be changed
+        int[][] res = Table;
+        height = 40;
+        width = 30;
         char[] rule = convertToBinary(ruleNumber);
-        for (int i = 1; i < height; i++) {
-            for (int j = 0; j < width - 1; j++) {
-                var d = convertToDecimal(Table[i - 1][j], Table[i][j], Table[i + 1][j]);
-                if (checkNext(d, rule)) {
-                    Table[i][j + 1] = 1;
+        for (int k = 0; k < 30; k++) {
+            for (int j = 0; j < height-1; j++) {
+                for (int i = 1; i < width-1; i++) {
+                    var d = convertToDecimal(Table[i - 1][j], Table[i][j], Table[i + 1][j]);
+                    if (checkNext(d, rule)) {
+                        res[i][j + 1] = 1;
+                    }
                 }
             }
+            res = periodicFill(res);
+            Table = res;
         }
-        Table = periodicFill(Table);
+        return Table;
     }
 
     public static int[][] periodicFill(int[][] Table) {
@@ -53,22 +58,18 @@ public class CA {
         return Table;
     }
 
-    public static void printCA(int Table[][]) throws IOException {
+    public static void printCA(int[][] Table) throws IOException {
         BufferedImage paintImg = new BufferedImage(600, 800, BufferedImage.TYPE_INT_ARGB);
         Graphics g = paintImg.createGraphics();
 
-        for (int i = 20; i < 580; i+=5) {
-            for (int j = 0; j < 800; j+=5) {
-//                for (int k = i*5; k < (i*5)+5; k++) {
-//                    for (int l = j*5; l < (j*5)+5; l++) {
-                if (Table[i/20][j/20] == 1) {
-                    g.setColor(new Color(0, 0, 0));
+        for (int i = 20; i < 580; i += 5) {
+            for (int j = 0; j < 800; j += 5) {
+                if (Table[i / 20][j / 20] == 1) {
+                    g.setColor(new Color(255, 0, 0));
                 } else {
-                    g.setColor(new Color(250, 4, 4));
+                    g.setColor(new Color(0, 0, 0));
                 }
                 g.fillRect(i, j, 5, 5);
-//                    }
-//                }
             }
         }
         ImageIO.write(paintImg, "png", new File("CA.bmp"));
@@ -76,8 +77,9 @@ public class CA {
     }
 
     public static void main(String[] args) throws IOException {
-        int[][] tb = new int[30][40];
-        tb[28][0]=1;
+        int[][] tb = new int[30][40]; // main board [1:28], rest work as periodic cells
+        tb[14][0] = 1;
+        tb = CA(tb, 90);
         printCA(tb);
     }
 }
