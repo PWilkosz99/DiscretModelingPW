@@ -53,7 +53,7 @@ public class Main {
         return bits;
     }
 
-    static boolean checkBoundsDil(int[][] bits, int x, int y, boolean isEr){
+    static boolean checkBounds(int[][] bits, int x, int y, boolean isEr){
         if(x<0||y<0||x>=330||y>=600){
             return false;
         }else{
@@ -70,24 +70,52 @@ public class Main {
         int[][] res = new int[330][600];
         for (int i = 0; i < 330; i++) {
             for (int j = 0; j < 600; j++) {
-                if (checkBoundsDil(bits, i - 1, j - 1, false)) {
+                if (checkBounds(bits, i - 1, j - 1, false)) {
                     res[i][j] = 0;
-                } else if (checkBoundsDil(bits, i, j - 1, false)) {
+                } else if (checkBounds(bits, i, j - 1, false)) {
                     res[i][j] = 0;
-                } else if (checkBoundsDil(bits, i + 1, j - 1, false)) {
+                } else if (checkBounds(bits, i + 1, j - 1, false)) {
                     res[i][j] = 0;
-                } else if (checkBoundsDil(bits, i - 1, j, false)) {
+                } else if (checkBounds(bits, i - 1, j, false)) {
                     res[i][j] = 0;
-                } else if (checkBoundsDil(bits, i + 1, j, false)) {
+                } else if (checkBounds(bits, i + 1, j, false)) {
                     res[i][j] = 0;
-                } else if (checkBoundsDil(bits, i - 1, j + 1, false)) {
+                } else if (checkBounds(bits, i - 1, j + 1, false)) {
                     res[i][j] = 0;
-                } else if (checkBoundsDil(bits, i, j + 1, false)) {
+                } else if (checkBounds(bits, i, j + 1, false)) {
                     res[i][j] = 0;
-                } else if (checkBoundsDil(bits, i + 1, j + 1, false)) {
+                } else if (checkBounds(bits, i + 1, j + 1, false)) {
                     res[i][j] = 0;
                 }else{
                     res[i][j] = 255;
+                }
+            }
+        }
+        return res;
+    }
+
+    static int[][] Erosion(int[][] bits) {
+        int[][] res = new int[330][600];
+        for (int i = 0; i < 330; i++) {
+            for (int j = 0; j < 600; j++) {
+                if (checkBounds(bits, i - 1, j - 1, true)) {
+                    res[i][j] = 255;
+                } else if (checkBounds(bits, i, j - 1, true)) {
+                    res[i][j] = 255;
+                } else if (checkBounds(bits, i + 1, j - 1, true)) {
+                    res[i][j] = 255;
+                } else if (checkBounds(bits, i - 1, j, true)) {
+                    res[i][j] = 255;
+                } else if (checkBounds(bits, i + 1, j, true)) {
+                    res[i][j] = 255;
+                } else if (checkBounds(bits, i - 1, j + 1, true)) {
+                    res[i][j] = 255;
+                } else if (checkBounds(bits, i, j + 1, true)) {
+                    res[i][j] = 255;
+                } else if (checkBounds(bits, i + 1, j + 1, true)) {
+                    res[i][j] = 255;
+                }else{
+                    res[i][j] = 0;
                 }
             }
         }
@@ -146,6 +174,7 @@ public class Main {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
 
     static void saveToBmp(int[][] bits) throws IOException {
         BufferedImage paintImg = new BufferedImage(600, 330, BufferedImage.TYPE_INT_ARGB);
@@ -228,7 +257,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         var a = getBitArray();
         a = Binarization(a, 200);
-        a = Dilatation(a);
+        //a = Dilatation(a);
+        a = Erosion(a);
         //a = highPassFilter(a);
         //a = lowPassFilter(a);
         //System.out.println(Arrays.deepToString(a));

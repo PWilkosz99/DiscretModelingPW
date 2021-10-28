@@ -1,5 +1,9 @@
 package com.company;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class CA {
@@ -49,10 +53,31 @@ public class CA {
         return Table;
     }
 
-    //TODO: drawing
+    public static void printCA(int Table[][]) throws IOException {
+        BufferedImage paintImg = new BufferedImage(600, 800, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = paintImg.createGraphics();
+
+        for (int i = 20; i < 580; i+=5) {
+            for (int j = 0; j < 800; j+=5) {
+//                for (int k = i*5; k < (i*5)+5; k++) {
+//                    for (int l = j*5; l < (j*5)+5; l++) {
+                if (Table[i/20][j/20] == 1) {
+                    g.setColor(new Color(0, 0, 0));
+                } else {
+                    g.setColor(new Color(250, 4, 4));
+                }
+                g.fillRect(i, j, 5, 5);
+//                    }
+//                }
+            }
+        }
+        ImageIO.write(paintImg, "png", new File("CA.bmp"));
+        g.dispose();
+    }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(convertToDecimal(1, 1, 1));
-        System.out.println(convertToBinary(128));
+        int[][] tb = new int[30][40];
+        tb[28][0]=1;
+        printCA(tb);
     }
 }
