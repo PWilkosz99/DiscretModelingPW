@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class CA {
 
@@ -20,7 +23,14 @@ public class CA {
             bs = "0";
             bs += tmp;
         }
-        return bs.toCharArray();
+        Character tmpc;
+        char[] ctab = bs.toCharArray();
+        for (int i = 0; i < 4; i++) {
+            tmpc=ctab[i];
+            ctab[i]=ctab[7-i];
+            ctab[7-i]=tmpc;
+        }
+        return ctab;
     }
 
     public static Boolean checkNext(int upperValue, char[] rule) {
@@ -79,7 +89,7 @@ public class CA {
     public static void main(String[] args) throws IOException {
         int[][] tb = new int[30][40]; // main board [1:28], rest work as periodic cells
         tb[14][0] = 1;
-        tb = CA(tb, 90);
+        tb = CA(tb, 250);
         printCA(tb);
     }
 }
