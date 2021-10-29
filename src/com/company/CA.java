@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class CA {
+    private static final int X = 30;
+    private static final int Y = 40;
 
     public static int convertToDecimal(Integer s0, Integer s1, Integer s2) {
         return s0 + (s1 * 2) + (s2 * 4);
@@ -23,7 +25,7 @@ public class CA {
             bs = "0";
             bs += tmp;
         }
-        Character tmpc;
+        char tmpc;
         char[] ctab = bs.toCharArray();
         for (int i = 0; i < 4; i++) {
             tmpc=ctab[i];
@@ -40,10 +42,10 @@ public class CA {
     public static int[][] CA(int[][] Table, int ruleNumber) {
         int height, width;
         int[][] res = Table;
-        height = 40;
-        width = 30;
+        height = Y;
+        width = X;
         char[] rule = convertToBinary(ruleNumber);
-        for (int k = 0; k < 30; k++) {
+        for (int k = 0; k < height; k++) {
             for (int j = 0; j < height-1; j++) {
                 for (int i = 1; i < width-1; i++) {
                     var d = convertToDecimal(Table[i - 1][j], Table[i][j], Table[i + 1][j]);
@@ -59,8 +61,8 @@ public class CA {
     }
 
     public static int[][] periodicFill(int[][] Table) {
-        int height = 10;
-        int width = 10;//tmp
+        int height = Y-1;
+        int width = X-1;
         for (int i = 0; i < height; i++) {
             Table[0][height] = Table[width][height];
             Table[width - 1][height] = Table[1][height];
@@ -87,9 +89,9 @@ public class CA {
     }
 
     public static void main(String[] args) throws IOException {
-        int[][] tb = new int[30][40]; // main board [1:28], rest work as periodic cells
+        int[][] tb = new int[X][Y]; // main board [1:28], rest work as periodic cells
         tb[14][0] = 1;
-        tb = CA(tb, 250);
+        tb = CA(tb, 225);
         printCA(tb);
     }
 }
