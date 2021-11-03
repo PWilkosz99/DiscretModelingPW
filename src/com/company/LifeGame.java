@@ -106,10 +106,18 @@ public class LifeGame {
         Board[cx+1][cy+2]=1;
     }
 
+    public void startRuleOscillator(){
+        int cx=x/2;
+        int cy=y/2;
+        Board[cx-1][cy]=1;
+        Board[cx][cy]=1;
+        Board[cx+1][cy]=1;
+    }// change x=>y
+
 
     public static void main(String[] args) throws IOException {
         LifeGame lf = new LifeGame(90, 90);
-        lf.startRuleGilder();
-        lf.StartGame(5);
+        lf.startRuleOscillator();
+        lf.StartGame(10);
     }
 }
