@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class LifeGame {
     public int[][] Board;
@@ -103,7 +104,7 @@ public class LifeGame {
                 if (Board[x - (i / 5)][y - (j / 5)] == 1) {
                     g.setColor(new Color(0, 255, 0));
                 } else {
-                    g.setColor(new Color(255, 255, 255));
+                    g.setColor(new Color(255, 0, 0));
                 }
                 g.fillRect(i, j, 5, 5);
             }
@@ -140,6 +141,12 @@ public class LifeGame {
             for (int j = 0; j < y; j++) {
                 Board[i][j]=(int)Math.round(Math.random());
             }
+        }
+    }
+
+    public void startRuleOwn(Map.Entry<Integer, Integer>[] values){
+        for (Map.Entry<Integer, Integer> v: values) {
+            Board[v.getKey()][v.getValue()]=1;
         }
     }
 
