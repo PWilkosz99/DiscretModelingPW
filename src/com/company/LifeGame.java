@@ -135,11 +135,18 @@ public class LifeGame {
         Board[cx+1][cy-1]=1;
     }
 
+    public void startRuleRandom(){
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                Board[i][j]=(int)Math.round(Math.random());
+            }
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         LifeGame lf = new LifeGame(90, 90);
         lf.fillArrayByZero();
-        lf.startRuleBeeHive();
+        lf.startRuleRandom();
         lf.StartGame(10);
     }
 }
