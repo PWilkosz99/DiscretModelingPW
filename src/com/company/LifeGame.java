@@ -74,12 +74,12 @@ public class LifeGame {
 
     private void periodicFill() {
         for (int i = 0; i < y; i++) {
-            Board[0][i]=Board[x-2][i];
-            Board[x-1][i]=Board[1][i];
+            Board[0][i] = Board[x - 2][i];
+            Board[x - 1][i] = Board[1][i];
         }
         for (int i = 0; i < x; i++) {
-            Board[i][0]=Board[i][x-2];
-            Board[i][x-1]=Board[i][1];
+            Board[i][0] = Board[i][x - 2];
+            Board[i][x - 1] = Board[i][1];
         }
     }
 
@@ -96,7 +96,7 @@ public class LifeGame {
         Graphics g = paintImg.createGraphics();
         for (int i = 5; i < (x * 5) - 5; i += 5) {
             for (int j = 5; j < (y * 5) - 5; j += 5) {
-                if (Board[i / 5][j / 5] == 1) {
+                if (Board[x - (i / 5)][y - (j / 5)] == 1) {
                     g.setColor(new Color(0, 255, 0));
                 } else {
                     g.setColor(new Color(255, 255, 255));
@@ -128,9 +128,9 @@ public class LifeGame {
 
 
     public static void main(String[] args) throws IOException {
-        LifeGame lf = new LifeGame(10, 10);
+        LifeGame lf = new LifeGame(90, 90);
         lf.fillArrayByZero();
-        lf.startRuleOscillator();
+        lf.startRuleGilder();
         lf.StartGame(10);
     }
 }
