@@ -22,7 +22,9 @@ public class LifeGame {
     }
 
     public void StartGame(int iter) throws IOException {
-        for (int it = 0; it < iter; it++) {
+        print();
+        iter++;
+        for (int it = 1; it < iter; it++) {
             ii = it;
             for (int i = 0; i < x; i++) {
                 for (int j = 0; j < y; j++) {
@@ -30,6 +32,7 @@ public class LifeGame {
                 }
             }
             Board = tmpBoard;
+            tmpBoard= new int[x][y];
             print();
             periodicFill();
         }
@@ -55,19 +58,18 @@ public class LifeGame {
         if (checkStateSafe(xx, yy + 1)) liveCellsCount++;
         if (checkStateSafe(xx + 1, yy + 1)) liveCellsCount++;
 
-        int cellState = Board[xx][yy];
-
-        if ((cellState == 0) && (liveCellsCount == 3)) {
+        if (liveCellsCount < 2) {
+            tmpBoard[xx][yy] = 0;
+        }  //underpop
+        else if (liveCellsCount > 3) {
+            tmpBoard[xx][yy] = 0;
+        } //overcrowd
+        else if (liveCellsCount == 3) {
             tmpBoard[xx][yy] = 1;
-        } else if ((cellState == 1) && (liveCellsCount == 2 || liveCellsCount == 3)) {
-            tmpBoard[xx][yy] = 1;
-        } else if ((cellState == 1) && liveCellsCount > 3) {
-            tmpBoard[xx][yy] = 0;
-        } else if ((cellState == 1) && liveCellsCount < 2) {
-            tmpBoard[xx][yy] = 0;
-        } else {
-            tmpBoard[xx][yy] = 0;
-        }
+        } //born
+        else if (liveCellsCount == 2) {
+            tmpBoard[xx][yy] = Board[xx][yy];
+        } // stay same
     }
 
     private void periodicFill() {
@@ -76,6 +78,14 @@ public class LifeGame {
         for (int i = 0; i < y-1; i++) {
             Board[0][height] = Board[width][height];
             Board[width - 1][height] = Board[1][height];
+        }
+    }
+
+    public void fillArrayByZero(){
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                Board[i][j]=0;
+            }
         }
     }
 
@@ -116,7 +126,8 @@ public class LifeGame {
 
 
     public static void main(String[] args) throws IOException {
-        LifeGame lf = new LifeGame(90, 90);
+        LifeGame lf = new LifeGame(10, 10);
+        lf.fillArrayByZero();
         lf.startRuleOscillator();
         lf.StartGame(10);
     }
