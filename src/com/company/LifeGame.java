@@ -32,7 +32,7 @@ public class LifeGame {
                 }
             }
             Board = tmpBoard;
-            tmpBoard= new int[x][y];
+            tmpBoard = new int[x][y];
             print();
             periodicFill();
         }
@@ -73,31 +73,31 @@ public class LifeGame {
     }
 
     private void periodicFill() {
-        int height = y-1;
-        int width = x-1;
-        for (int i = 0; i < y-1; i++) {
+        int height = y - 1;
+        int width = x - 1;
+        for (int i = 0; i < y - 1; i++) {
             Board[0][height] = Board[width][height];
             Board[width - 1][height] = Board[1][height];
         }
     }
 
-    public void fillArrayByZero(){
+    public void fillArrayByZero() {
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
-                Board[i][j]=0;
+                Board[i][j] = 0;
             }
         }
     }
 
     private void print() throws IOException {
-        BufferedImage paintImg = new BufferedImage(5 * x, 5 * y, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage paintImg = new BufferedImage((5 * x) - 10, (5 * y) - 10, BufferedImage.TYPE_INT_ARGB);
         Graphics g = paintImg.createGraphics();
         for (int i = 5; i < (x * 5) - 5; i += 5) {
-            for (int j = 0; j < y * 5; j += 5) {
-                if (Board[i/5][j/5] == 1) {
-                    g.setColor(new Color(255, 0, 0));
+            for (int j = 5; j < (y * 5) - 5; j += 5) {
+                if (Board[i / 5][j / 5] == 1) {
+                    g.setColor(new Color(0, 255, 0));
                 } else {
-                    g.setColor(new Color(0, 0, 0));
+                    g.setColor(new Color(255, 255, 255));
                 }
                 g.fillRect(i, j, 5, 5);
             }
@@ -106,22 +106,22 @@ public class LifeGame {
         g.dispose();
     }
 
-    public void startRuleGilder(){
-        int cx = x/2;
-        int cy = y/2;
-        Board[cx][cy]=1;
-        Board[cx+1][cy]=1;
-        Board[cx-1][cy+1]=1;
-        Board[cx][cy+1]=1;
-        Board[cx+1][cy+2]=1;
+    public void startRuleGilder() {
+        int cx = x / 2;
+        int cy = y / 2;
+        Board[cx][cy] = 1;
+        Board[cx + 1][cy] = 1;
+        Board[cx - 1][cy + 1] = 1;
+        Board[cx][cy + 1] = 1;
+        Board[cx + 1][cy + 2] = 1;
     }
 
-    public void startRuleOscillator(){
-        int cx=x/2;
-        int cy=y/2;
-        Board[cx-1][cy]=1;
-        Board[cx][cy]=1;
-        Board[cx+1][cy]=1;
+    public void startRuleOscillator() {
+        int cx = x / 2;
+        int cy = y / 2;
+        Board[cx - 1][cy] = 1;
+        Board[cx][cy] = 1;
+        Board[cx + 1][cy] = 1;
     }// change x=>y
 
 
