@@ -18,6 +18,7 @@ public class LifeGame {
         tmpBoard = new int[x][y];
         this.x = x;
         this.y = y;
+        periodicFill();
     }
 
     public void StartGame(int iter) throws IOException {
@@ -30,6 +31,7 @@ public class LifeGame {
             }
             Board = tmpBoard;
             print();
+            periodicFill();
         }
     }
 
@@ -68,6 +70,15 @@ public class LifeGame {
         }
     }
 
+    private void periodicFill() {
+        int height = y-1;
+        int width = x-1;
+        for (int i = 0; i < y-1; i++) {
+            Board[0][height] = Board[width][height];
+            Board[width - 1][height] = Board[1][height];
+        }
+    }
+
     private void print() throws IOException {
         BufferedImage paintImg = new BufferedImage(5 * x, 5 * y, BufferedImage.TYPE_INT_ARGB);
         Graphics g = paintImg.createGraphics();
@@ -85,9 +96,20 @@ public class LifeGame {
         g.dispose();
     }
 
+    public void startRuleGilder(){
+        int cx = x/2;
+        int cy = y/2;
+        Board[cx][cy]=1;
+        Board[cx+1][cy]=1;
+        Board[cx-1][cy+1]=1;
+        Board[cx][cy+1]=1;
+        Board[cx+1][cy+2]=1;
+    }
+
+
     public static void main(String[] args) throws IOException {
         LifeGame lf = new LifeGame(90, 90);
+        lf.startRuleGilder();
         lf.StartGame(5);
-        //lf.print();
     }
 }
