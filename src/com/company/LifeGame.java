@@ -11,6 +11,8 @@ public class LifeGame {
     private int[][] tmpBoard;
     private final int x;
     private final int y;
+    private final int cx;
+    private final int cy;
     private int ii;
 
     LifeGame(int x, int y) {
@@ -18,6 +20,8 @@ public class LifeGame {
         tmpBoard = new int[x][y];
         this.x = x;
         this.y = y;
+        cx=x/2;
+        cy=y/2;
         periodicFill();
     }
 
@@ -109,8 +113,6 @@ public class LifeGame {
     }
 
     public void startRuleGilder() {
-        int cx = x / 2;
-        int cy = y / 2;
         Board[cx][cy] = 1;
         Board[cx + 1][cy] = 1;
         Board[cx - 1][cy + 1] = 1;
@@ -119,18 +121,25 @@ public class LifeGame {
     }
 
     public void startRuleOscillator() {
-        int cx = x / 2;
-        int cy = y / 2;
         Board[cx - 1][cy] = 1;
         Board[cx][cy] = 1;
         Board[cx + 1][cy] = 1;
-    }// change x=>y
+    }
+
+    public void startRuleBeeHive(){
+        Board[cx-1][cy]=1;
+        Board[cx+2][cy]=1;
+        Board[cx][cy+1]=1;
+        Board[cx+1][cy+1]=1;
+        Board[cx][cy-1]=1;
+        Board[cx+1][cy-1]=1;
+    }
 
 
     public static void main(String[] args) throws IOException {
         LifeGame lf = new LifeGame(90, 90);
         lf.fillArrayByZero();
-        lf.startRuleGilder();
+        lf.startRuleBeeHive();
         lf.StartGame(10);
     }
 }
