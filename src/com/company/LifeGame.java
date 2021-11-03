@@ -73,11 +73,13 @@ public class LifeGame {
     }
 
     private void periodicFill() {
-        int height = y - 1;
-        int width = x - 1;
-        for (int i = 0; i < y - 1; i++) {
-            Board[0][height] = Board[width][height];
-            Board[width - 1][height] = Board[1][height];
+        for (int i = 0; i < y; i++) {
+            Board[0][i]=Board[x-2][i];
+            Board[x-1][i]=Board[1][i];
+        }
+        for (int i = 0; i < x; i++) {
+            Board[i][0]=Board[i][x-2];
+            Board[i][x-1]=Board[i][1];
         }
     }
 
