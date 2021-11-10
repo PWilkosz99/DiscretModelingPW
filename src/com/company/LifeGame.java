@@ -103,7 +103,7 @@ public class LifeGame {
             for (int j = 5; j < (y * 5) - 5; j += 5) {
                 if (Board[x - (i / 5)][y - (j / 5)] == 1) {
                     g.setColor(new Color(0, 255, 0));
-                } else {
+                } else {    
                     g.setColor(new Color(255, 0, 0));
                 }
                 g.fillRect(i, j, 5, 5);
