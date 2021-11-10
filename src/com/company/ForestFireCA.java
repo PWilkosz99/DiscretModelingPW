@@ -13,6 +13,7 @@ public class ForestFireCA {
     private final int y;
     private double newTreeProbability; //percent
     private double newFireProbability; //percent
+    private int ii;
 
     private enum Tree {
         DEAD,
@@ -32,9 +33,17 @@ public class ForestFireCA {
         newFireProbability = FP;
     }
 
-    public void StartSimulation() {
+    public void StartSimulation() throws IOException {
         fillArrayByZero();
         afforestation(5);
+        ii=0;
+        print();
+        for (int i = 1; i < 10; i++) {
+            selfImmolation();
+            ii=i;
+            print();
+            afforestation();
+        }
     }
 
     public void fillArrayByZero() {
@@ -65,6 +74,18 @@ public class ForestFireCA {
         afforestation(newTreeProbability);
     }
 
+    public void selfImmolation(){
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                if (Forest[i][j] == Tree.LIFE) {
+                    if (getRandom() < 10 * newFireProbability) {
+                        Forest[i][j] = Tree.BURNING;
+                    }
+                }
+            }
+        }
+    }
+
     private void print() throws IOException {
         BufferedImage paintImg = new BufferedImage((5 * x), (5 * y), BufferedImage.TYPE_INT_ARGB);
         Graphics g = paintImg.createGraphics();
@@ -80,13 +101,12 @@ public class ForestFireCA {
                 g.fillRect(i, j, 5, 5);
             }
         }
-        int ii = 0;//tmp
         ImageIO.write(paintImg, "png", new File("Forest/F" + ii + ".bmp"));
         g.dispose();
     }
 
     public static void main(String[] args) throws IOException {
-        ForestFireCA forest = new ForestFireCA(500, 500, 2.5, 2);
+        ForestFireCA forest = new ForestFireCA(500, 500, 0.5, 2);
         forest.StartSimulation();
         forest.print();
     }
