@@ -15,6 +15,7 @@ public class ForestFireCA {
     private double newFireProbability; //percent
     private double propagationRatio; //percent
     private int ii;
+    private Byte[][] burningTime;
 
     private enum Tree {
         DEAD,
@@ -33,17 +34,19 @@ public class ForestFireCA {
         newTreeProbability = TP;
         newFireProbability = FP;
         propagationRatio = P;
+        burningTime = new Byte[x][y];
     }
 
-    public void StartSimulation() throws IOException {
+    public void StartSimulation(int iter) throws IOException {
         fillArrayByZero();
         afforestation(5);
         ii = 0;
         print();
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < iter; i++) {
             neighborImmolation();
             ii = i;
             print();
+            buringProcess();
             afforestation();
             selfImmolation();
         }
@@ -53,6 +56,7 @@ public class ForestFireCA {
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
                 Forest[i][j] = Tree.DEAD;
+                burningTime[i][j]=-1;
             }
         }
     }
@@ -83,6 +87,7 @@ public class ForestFireCA {
                 if (Forest[i][j] == Tree.LIFE) {
                     if (getRandom() < 10 * newFireProbability) {
                         Forest[i][j] = Tree.BURNING;
+                        burningTime[i][j]=0;
                     }
                 }
             }
@@ -99,25 +104,39 @@ public class ForestFireCA {
         Tree[][] tmp = Forest.clone();
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                if(Forest[i][j]==Tree.LIFE){
-                int burningNeighboursCount = 0;
-                if (checkStateSafe(i - 1, j - 1)) burningNeighboursCount++;
-                if (checkStateSafe(i, j - 1)) burningNeighboursCount++;
-                if (checkStateSafe(i + 1, j - 1)) burningNeighboursCount++;
-                if (checkStateSafe(i - 1, j)) burningNeighboursCount++;
-                if (checkStateSafe(i + 1, j)) burningNeighboursCount++;
-                if (checkStateSafe(i - 1, j + 1)) burningNeighboursCount++;
-                if (checkStateSafe(i, j + 1)) burningNeighboursCount++;
-                if (checkStateSafe(i + 1, j + 1)) burningNeighboursCount++;
+                if (Forest[i][j] == Tree.LIFE) {
+                    int burningNeighboursCount = 0;
+                    if (checkStateSafe(i - 1, j - 1)) burningNeighboursCount++;
+                    if (checkStateSafe(i, j - 1)) burningNeighboursCount++;
+                    if (checkStateSafe(i + 1, j - 1)) burningNeighboursCount++;
+                    if (checkStateSafe(i - 1, j)) burningNeighboursCount++;
+                    if (checkStateSafe(i + 1, j)) burningNeighboursCount++;
+                    if (checkStateSafe(i - 1, j + 1)) burningNeighboursCount++;
+                    if (checkStateSafe(i, j + 1)) burningNeighboursCount++;
+                    if (checkStateSafe(i + 1, j + 1)) burningNeighboursCount++;
 
-                if(getRandom()<burningNeighboursCount*propagationRatio) {
-                    tmp[i][j]=Tree.BURNING;
+                    if (getRandom() < burningNeighboursCount * propagationRatio) {
+                        tmp[i][j] = Tree.BURNING;
+                        burningTime[i][j]=0;
+                    }
+                }
+            }
+        }
+        Forest = tmp;
+    }
+
+    private void buringProcess() {
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                if (burningTime[i][j] > 3) {
+                    Forest[i][j] = Tree.DEAD;
+                    burningTime[i][j]=-1;
+                } else if (burningTime[i][j] >= 0) {
+                    burningTime[i][j]++;
                 }
             }
         }
     }
-        Forest=tmp;
-}
 
     private void print() throws IOException {
         BufferedImage paintImg = new BufferedImage((5 * x), (5 * y), BufferedImage.TYPE_INT_ARGB);
@@ -139,8 +158,8 @@ public class ForestFireCA {
     }
 
     public static void main(String[] args) throws IOException {
-        ForestFireCA forest = new ForestFireCA(500, 500, 0.5, 2, 40);
-        forest.StartSimulation();
+        ForestFireCA forest = new ForestFireCA(500, 500, 0.25, 1, 40);
+        forest.StartSimulation(20);
         forest.print();
     }
 }
