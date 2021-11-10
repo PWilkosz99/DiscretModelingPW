@@ -6,10 +6,18 @@ public class ForestFireCA {
     public int[][] Forest;
     private final int x;
     private final int y;
+    private double newTreeProbability; //percent
+    private double newFireProbability; //percent
 
     ForestFireCA(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+    
+    ForestFireCA(int x, int y, double TP, double FP) {
+        this(x,y);
+        newTreeProbability=TP;
+        newFireProbability=FP;
     }
 
     public void fillArrayByZero() {
@@ -21,10 +29,11 @@ public class ForestFireCA {
     }
 
     private int getRandom() {
-        return (int) (Math.random() * 100); //0-99
+        return (int) (Math.random() * 1000); //0-999
     }
 
     public static void main(String[] args) throws IOException {
+
     }
 }
 
