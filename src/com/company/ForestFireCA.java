@@ -54,12 +54,12 @@ public class ForestFireCA {
         ii = 0;
         print();
         for (int i = 1; i < iter; i++) {
-            neighborImmolation();
+            selfImmolation();
             ii = i;
             print();
+            neighborImmolation();
             buringProcess();
             afforestation();
-            selfImmolation();
         }
     }
 
@@ -74,6 +74,10 @@ public class ForestFireCA {
 
     private int getRandom() {
         return (int) (Math.random() * 1000); //0-999
+    }
+
+    private double getRandomD() {
+        return  (Math.random() * 1000.0); //0-999.9
     }
 
     private void getExclusions() throws FileNotFoundException {
@@ -115,7 +119,7 @@ public class ForestFireCA {
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
                 if (Forest[i][j] == Tree.LIFE) {
-                    if (getRandom() < 10 * newFireProbability) {
+                    if (getRandomD() < 10.0 * newFireProbability) {
                         Forest[i][j] = Tree.BURNING;
                         burningTime[i][j] = 0;
                     }
@@ -234,8 +238,8 @@ public class ForestFireCA {
     }
 
     public static void main(String[] args) throws IOException {
-        ForestFireCA forest = new ForestFireCA(600, 330, 2.5, 0.5, 100, Direction.North);
-        forest.StartSimulation(20);
+        ForestFireCA forest = new ForestFireCA(600, 330, 2.5, 0.005, 40, Direction.North);
+        forest.StartSimulation(50);
         forest.print();
     }
 }
