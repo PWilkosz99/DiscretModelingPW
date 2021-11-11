@@ -39,7 +39,7 @@ public class ForestFireCA {
 
     public void StartSimulation(int iter) throws IOException {
         fillArrayByZero();
-        afforestation(5);
+        afforestation(25);
         ii = 0;
         print();
         for (int i = 1; i < iter; i++) {
@@ -101,11 +101,12 @@ public class ForestFireCA {
     }
 
     private void neighborImmolation() {
-        Tree[][] tmp = Forest.clone();
+        Tree[][] tmp = new Tree[x][y];
+        int burningNeighboursCount;
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
                 if (Forest[i][j] == Tree.LIFE) {
-                    int burningNeighboursCount = 0;
+                    burningNeighboursCount = 0;
                     if (checkStateSafe(i - 1, j - 1)) burningNeighboursCount++;
                     if (checkStateSafe(i, j - 1)) burningNeighboursCount++;
                     if (checkStateSafe(i + 1, j - 1)) burningNeighboursCount++;
@@ -118,11 +119,15 @@ public class ForestFireCA {
                     if (getRandom() < burningNeighboursCount * propagationRatio) {
                         tmp[i][j] = Tree.BURNING;
                         burningTime[i][j]=0;
+                    }else{
+                        tmp[i][j]=Forest[i][j];
                     }
+                }else{
+                    tmp[i][j]=Forest[i][j];
                 }
             }
         }
-        Forest = tmp;
+        Forest = tmp.clone();
     }
 
     private void buringProcess() {
@@ -158,7 +163,7 @@ public class ForestFireCA {
     }
 
     public static void main(String[] args) throws IOException {
-        ForestFireCA forest = new ForestFireCA(500, 500, 0.25, 1, 40);
+        ForestFireCA forest = new ForestFireCA(50, 50, 2.5, 0.5, 1000);
         forest.StartSimulation(20);
         forest.print();
     }
